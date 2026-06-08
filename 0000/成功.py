@@ -89,7 +89,7 @@ html, body, [data-testid="stAppViewContainer"] {
 </style>
 """, unsafe_allow_html=True)
 
-# --- 豪華終極庫：共 8 個精選海龜湯 ---
+# 豪華終極庫：共 8 個精選海龜湯
 PUZZLES = [
     {
         "id": "p1",
@@ -136,7 +136,7 @@ PUZZLES = [
         "title": "名門連續慘案：致命的時鐘",
         "tag": "CASE #006",
         "genre": ["機械陷阱", "時間心理學"],
-        "question": "一名收藏家在書房中被毒殺，現場的時鐘剛好停在 10 點整，指針處還沾著一點微量的劇毒。警方認為兇手是在 10 點時利用時鐘下毒，但柯 essential卻指出：死者是在 12 點時中毒的。為什麼？",
+        "question": "一名收藏家在書房中被毒殺，現場的時鐘剛好停在 10 點整，指針處還沾著一點微量的劇毒。警方認為兇手是在 10 點時利用時鐘下毒，但柯南卻指出：死者是在 12 點時中毒的。為什麼？",
         "answer": "兇手利用了時間差與機械陷阱。兇手在時鐘的時針與分針交疊處（即 12 點）抹上劇毒，並將時鐘撥快或撥慢。死者習慣在每天固定時間去調整家中所有時鐘，當他試圖去撥動指針時，指尖觸碰到了指針上的劇毒。至於時鐘停在 10 點，是因為兇手在案發後故意將時鐘強行轉動並卡住，製造出不在場證明。",
     },
     {
@@ -145,7 +145,7 @@ PUZZLES = [
         "tag": "CASE #007",
         "genre": ["長曝光相機", "不自然殘影"],
         "question": "案發當天，兇手在旅遊景點拍了一張與 50 名遊客的大合照，照片日期清晰可見。警方核對照片後，確認該時間點兇手確實人在遙遠的景點，不可能回城犯案。然而柯南卻說：「這張照片反而是最直接的證據，證明他就是兇手。」為什麼？",
-        "answer": "這是一張經過精心設計的長曝光照片。兇手利用景點的旅遊旺季，將相機設置在長時間曝光模式（或多重曝光），他只在相機開拍的第一秒和最後一秒出現在鏡頭前，中間則藉機溜走去犯案。照片中，他留下了殘影，但在視覺上看起來他始終站在那裡。柯南發現照片中其他人的影子長度與兇手的殘影重疊度不自然，從而戳破了虛假的合影。",
+        "answer": "這是一張經過精心設計的長曝光照片。兇手利用景點的旅遊旺季，將相機設置在長時間曝光模式（或多重曝光），他只在相機開拍的第一秒 and 最後一秒出現在鏡頭前，中間則藉機溜走去犯案。照片中，他留下了殘影，但在視覺上看起來他始終站在那裡。柯南發現照片中其他人的影子長度與兇手的殘影重疊度不自然，從而戳破了虛假的合影。",
     },
     {
         "id": "p8",
@@ -186,7 +186,7 @@ with st.sidebar:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # 渲染所有歷史紀錄列表
+    # 渲染所有歷史紀錄列表 (標題動態與當前案件的 title 智慧連動)
     for s_id, s_data in list(st.session_state.history_sessions.items()):
         associated_puzzle = PUZZLES[s_data["puzzle_index"]]
         short_title = associated_puzzle["title"].split("：")[-1]
@@ -270,7 +270,7 @@ if user_input:
     if not REAL_GEMINI_KEY:
         st.error("⚠️ 未設定 API Key！請到 Streamlit 的 Settings -> Secrets 中設定 `GEMINI_API_KEY`。")
         st.stop()
-        
+
     with st.chat_message("user", avatar="👓"):
         st.markdown(f'<div class="msg-user"><div class="label">🎀 蝴蝶結變聲器 · 偵探質問</div>{user_input}</div>', unsafe_allow_html=True)
     cur_session["chat_history"].append({"role": "user", "content": user_input})
@@ -296,8 +296,9 @@ if user_input:
                     prompt_context += f"{label}: {m['content']}\n"
             prompt_context += f"\n玩家最新提問：{user_input}\n你的單一精簡回應："
 
+            # 已成功更新為最新的 gemini-3.1-flash-lite
             response = client.models.generate_content(
-                model='gemini-2.5-flash',
+                model='gemini-3.1-flash-lite',
                 contents=prompt_context
             )
             raw = response.text.strip()
